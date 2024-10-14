@@ -17,11 +17,23 @@ import { useEffect, useState } from "react";
 export function DialogBox() {
   const [invoice, setInvoice] = useState<string>("");
   const [displayMessage, setDisplayMessage] = useState<string>("");
-  const [dataFromChild, setDataFromChild] = useState<string>("Status")
+  const [dataFromStatusChild, setDataFromStatusChild] =
+    useState<string>("Status");
+  const [methodData, setMethodData] = useState<string>("Status");
 
-  function handleDatafromChild(data:string) {
-    setDataFromChild(data)
-    console.log(dataFromChild)
+  function datafromStatus(data: string) {
+    setDataFromStatusChild(data);
+  }
+
+  function dataFromMethod(data: string) {
+    setMethodData(data);
+  }
+
+  function dataToMethod() {
+    if (dataFromStatusChild === "Unpaid") {
+      setMethodData("-");
+      return true;
+    }
   }
 
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
@@ -29,6 +41,8 @@ export function DialogBox() {
   }
   function handleSubmit() {
     console.log(displayMessage);
+    console.log(dataFromStatusChild);
+    console.log(methodData);
   }
 
   useEffect(() => {
@@ -60,11 +74,14 @@ export function DialogBox() {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Status</Label>
-            <StatusCombobox sendDataToParent={handleDatafromChild}/>
+            <StatusCombobox sendDataToParent={datafromStatus} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Method</Label>
-            <MethodCombobox />
+            <MethodCombobox
+              sendDataToParent={dataFromMethod}
+              toChild={dataToMethod}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Amount</Label>

@@ -8,21 +8,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function StatusCombobox({ sendDataToParent }) {
+export function StatusCombobox({
+  sendDataToParent,
+}: {
+  sendDataToParent: (value: string) => void;
+}) {
   const [selected, setSelected] = React.useState<"Paid" | "Unpaid" | "Status">(
     "Status"
   );
-  const [sendData, setSendData] = React.useState<string>("");
 
   function handleSelect(value: "Paid" | "Unpaid") {
-    setSelected((prev) => (prev === value ? "Status" : value));
-    console.log(selected);
-    sendDataToParent(selected);
+    const newValue = selected === value ? "Status" : value;
+    setSelected(newValue);
+    sendDataToParent(newValue);
   }
-
-  // function handleClick() {
-  //   sendDataToParent(sendData)
-  // }
 
   return (
     <DropdownMenu>

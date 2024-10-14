@@ -8,17 +8,28 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function MethodCombobox() {
+export function MethodCombobox({
+  sendDataToParent,
+  toChild,
+}: {
+  sendDataToParent: (value: string) => void;
+  toChild: () => boolean;
+}) {
   const [selected, setSelected] = React.useState<
     "Cash" | "CC/Debit" | "UPI" | "Status"
   >("Status");
   function handleSelect(value: "Cash" | "CC/Debit" | "UPI") {
-    setSelected((prev) => (prev === value ? "Status" : value));
+    const newValue = selected === value ? "Status" : value;
+    setSelected(newValue);
+    sendDataToParent(newValue);
   }
+  const disable = toChild();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{selected}</Button>
+        <Button variant="outline" disabled={disable}>
+          {selected}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuCheckboxItem
