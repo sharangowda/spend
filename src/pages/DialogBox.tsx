@@ -12,8 +12,30 @@ import { Label } from "@/components/ui/label";
 import { StatusCombobox } from "./StatusCombo";
 import { MethodCombobox } from "./MethodCombo";
 import { DatePicker } from "./DatePicker";
+import { useEffect, useState } from "react";
 
 export function DialogBox() {
+  const [invoice, setInvoice] = useState<string>("");
+  const [displayMessage, setDisplayMessage] = useState<string>("");
+  const [dataFromChild, setDataFromChild] = useState<string>("Status")
+
+  function handleDatafromChild(data:string) {
+    setDataFromChild(data)
+    console.log(dataFromChild)
+  }
+
+  function handleChange(e: React.FormEvent<HTMLInputElement>) {
+    setInvoice(e.currentTarget.value);
+  }
+  function handleSubmit() {
+    console.log(displayMessage);
+  }
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => setDisplayMessage(invoice), 500);
+    return () => clearTimeout(timeOut);
+  }, [invoice]);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,28 +50,24 @@ export function DialogBox() {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Invoice
-            </Label>
-            <Input id="name" className="col-span-3" />
+            <Label className="text-right">Invoice</Label>
+            <Input
+              id="name"
+              className="col-span-3"
+              onChange={handleChange}
+              autoComplete="off"
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Status
-            </Label>
-            {/* <Input id="username" defaultValue="Paid" className="col-span-3" /> */}
-            <StatusCombobox />
+            <Label className="text-right">Status</Label>
+            <StatusCombobox sendDataToParent={handleDatafromChild}/>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Method
-            </Label>
+            <Label className="text-right">Method</Label>
             <MethodCombobox />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Amount
-            </Label>
+            <Label className="text-right">Amount</Label>
             <Input
               id="amount"
               type="number"
@@ -58,14 +76,14 @@ export function DialogBox() {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Date
-            </Label>
+            <Label className="text-right">Date</Label>
             <DatePicker />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Confirm</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Confirm
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

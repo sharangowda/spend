@@ -1,6 +1,8 @@
 import { SelectCharts } from "./SelectCharts";
 import { PieChartComponent } from "./Piechart";
 import { Tables } from "./Tables";
+import { BarHori } from "./Barchart-hori";
+import { BarVert } from "./Barchart-vert";
 
 function ChartComponent() {
   return (
@@ -12,7 +14,7 @@ function ChartComponent() {
               <SelectCharts />
             </div>
             <div className="p-3">
-              <PieChartComponent />
+              <BarVert />
             </div>
           </div>
           <div className="md:mt-10 md:w-84">
