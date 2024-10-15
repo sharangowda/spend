@@ -8,47 +8,38 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function MethodCombobox({
+export function PaymentStatus({
   sendDataToParent,
-  toChild,
 }: {
   sendDataToParent: (value: string) => void;
-  toChild: () => boolean;
 }) {
-  const [selected, setSelected] = React.useState<
-    "Cash" | "CC/Debit" | "UPI" | "Status"
-  >("Status");
-  function handleSelect(value: "Cash" | "CC/Debit" | "UPI") {
+  const [selected, setSelected] = React.useState<"Paid" | "Unpaid" | "Status">(
+    "Status"
+  );
+
+  function handleSelect(value: "Paid" | "Unpaid") {
     const newValue = selected === value ? "Status" : value;
     setSelected(newValue);
     sendDataToParent(newValue);
   }
-  const disable = toChild();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" disabled={disable}>
-          {selected}
-        </Button>
+        <Button variant="outline">{selected}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuCheckboxItem
-          checked={selected === "Cash"}
-          onCheckedChange={() => handleSelect("Cash")}
+          checked={selected === "Paid"}
+          onCheckedChange={() => handleSelect("Paid")}
         >
-          Cash
+          Paid
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
-          checked={selected === "CC/Debit"}
-          onCheckedChange={() => handleSelect("CC/Debit")}
+          checked={selected === "Unpaid"}
+          onCheckedChange={() => handleSelect("Unpaid")}
         >
-          Credit/Debit
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={selected === "UPI"}
-          onCheckedChange={() => handleSelect("UPI")}
-        >
-          UPI
+          Unpaid
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>

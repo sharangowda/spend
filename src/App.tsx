@@ -1,12 +1,12 @@
-import { Navibar } from "./pages/Navbar";
-import DivCards from "./pages/DivCards";
-import ChartComponent from "./pages/ChartComponent";
+import { Navbar } from "./pages/Navbar";
+import DivCards from "./pages/Cards/DivCards";
+import ChartComponent from "./pages/Charts/ChartComponent";
 
 function App() {
   return (
     <>
       <div className="mx-5 border-b-2 lg:mx-10">
-        <Navibar />
+        <Navbar />
       </div>
       <div className="mx-5 border-b-2">
         <DivCards />

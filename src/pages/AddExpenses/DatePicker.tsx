@@ -13,8 +13,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker() {
+export function DatePicker({ pickDate }) {
   const [date, setDate] = React.useState<Date>();
+
+  pickDate(date);
 
   return (
     <Popover>
@@ -23,7 +25,7 @@ export function DatePicker() {
           variant={"outline"}
           className={cn(
             "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground",
+            !date && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />

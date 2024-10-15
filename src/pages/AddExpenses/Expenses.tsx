@@ -9,17 +9,23 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { StatusCombobox } from "./StatusCombo";
-import { MethodCombobox } from "./MethodCombo";
+import { PaymentStatus } from "./PaymentStatus";
+import { PaymentMethod } from "./PaymentMethod";
 import { DatePicker } from "./DatePicker";
 import { useEffect, useState } from "react";
+import client from "@/lib/client";
+import { RecordModel } from "pocketbase";
 
-export function DialogBox() {
+export function AddExpenses() {
   const [invoice, setInvoice] = useState<string>("");
   const [displayMessage, setDisplayMessage] = useState<string>("");
+  const [displayAmount, setDisplayAmount] = useState<number>(0);
   const [dataFromStatusChild, setDataFromStatusChild] =
     useState<string>("Status");
   const [methodData, setMethodData] = useState<string>("Status");
+  const [amount, setAmount] = useState<number>(0);
+  const [date, setDate] = useState<Date>(new Date());
+  const [data, setData] = useState<RecordModel[]>([]);
 
   function datafromStatus(data: string) {
     setDataFromStatusChild(data);
@@ -27,6 +33,14 @@ export function DialogBox() {
 
   function dataFromMethod(data: string) {
     setMethodData(data);
+  }
+
+  function dataFromAmount(event: React.FormEvent<HTMLInputElement>) {
+    setAmount(parseInt(event.currentTarget.value));
+  }
+
+  function dataFromDate(data: Date) {
+    setDate(data);
   }
 
   function dataToMethod() {
@@ -39,16 +53,45 @@ export function DialogBox() {
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     setInvoice(e.currentTarget.value);
   }
-  function handleSubmit() {
-    console.log(displayMessage);
-    console.log(dataFromStatusChild);
-    console.log(methodData);
-  }
+  const pushToDatabase = async () => {
+    if (
+      record.invoice_method === "Status" ||
+      record.invoice_status === "Status" ||
+      record.payment_amount === 0 ||
+      record.payment_date === null ||
+      record.payment_invoices === ""
+    ) {
+      console.log("One or many fields are empty.");
+    } else {
+      await client.collection("expenses").create(record);
+    }
+  };
+
+  type Record = {
+    payment_invoices: string;
+    invoice_status: string;
+    invoice_method: string;
+    payment_amount: number;
+    payment_date: Date;
+  };
+
+  const record: Record = {
+    payment_invoices: invoice.trim().charAt(0).toUpperCase() + invoice.slice(1),
+    invoice_status: dataFromStatusChild,
+    invoice_method: methodData,
+    payment_amount: amount,
+    payment_date: date,
+  };
 
   useEffect(() => {
-    const timeOut = setTimeout(() => setDisplayMessage(invoice), 500);
-    return () => clearTimeout(timeOut);
-  }, [invoice]);
+    const timeOutinvoice = setTimeout(() => setDisplayMessage(invoice), 500);
+    const timeOutamount = setTimeout(() => setDisplayAmount(amount), 500);
+
+    return () => {
+      clearTimeout(timeOutinvoice);
+      clearTimeout(timeOutamount);
+    };
+  }, [invoice, amount]);
 
   return (
     <Dialog>
@@ -74,11 +117,11 @@ export function DialogBox() {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Status</Label>
-            <StatusCombobox sendDataToParent={datafromStatus} />
+            <PaymentStatus sendDataToParent={datafromStatus} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Method</Label>
-            <MethodCombobox
+            <PaymentMethod
               sendDataToParent={dataFromMethod}
               toChild={dataToMethod}
             />
@@ -88,17 +131,18 @@ export function DialogBox() {
             <Input
               id="amount"
               type="number"
+              onChange={dataFromAmount}
               defaultValue="@peduarte"
               className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Date</Label>
-            <DatePicker />
+            <DatePicker pickDate={dataFromDate} />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button type="submit" onClick={pushToDatabase}>
             Confirm
           </Button>
         </DialogFooter>
