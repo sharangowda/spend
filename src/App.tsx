@@ -22,3 +22,7 @@ function App() {
 }
 
 export default App;
+
+//todo:
+//Fix tables and chart width.
+//Fix Navbar
