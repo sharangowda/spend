@@ -6,6 +6,7 @@ import { BarVert } from "./Barchart-vert";
 import client from "@/lib/client";
 import { RecordModel } from "pocketbase";
 import { useState, useEffect } from "react";
+import { getTotalSum } from "@/utils/getTotalSum";
 
 function ChartComponent() {
   const [data, setData] = useState<RecordModel[]>([]);
@@ -14,7 +15,14 @@ function ChartComponent() {
       const response = await client.collection("expenses").getFullList();
       setData(response);
     }, 2000);
-    return () => clearTimeout(timeoutFetch);
+    const getAmount = setTimeout(async () => {
+      const res = await getTotalSum();
+      console.log(res);
+    }, 500);
+    return () => {
+      clearTimeout(timeoutFetch);
+      clearTimeout(getAmount);
+    };
   }, []);
   return (
     <>
