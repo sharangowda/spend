@@ -16,7 +16,7 @@ import {
   ReactPortal,
 } from "react";
 
-export function Tables({ data }) {
+export function Tables({ data, amount }) {
   return (
     <div className="container mx-auto p-4">
       <div
@@ -100,8 +100,8 @@ export function Tables({ data }) {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-right">$2,500.00</TableCell>
+              <TableCell colSpan={3}>Total amount paid</TableCell>
+              <TableCell className="text-right">{amount}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>

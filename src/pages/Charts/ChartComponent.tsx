@@ -7,9 +7,11 @@ import client from "@/lib/client";
 import { RecordModel } from "pocketbase";
 import { useState, useEffect } from "react";
 import { getTotalSum } from "@/utils/getTotalSum";
+import { cardDetailUtil } from "@/utils/cardDetailUtils";
 
 function ChartComponent() {
   const [data, setData] = useState<RecordModel[]>([]);
+  const [sum, setSum] = useState<number>(0);
   useEffect(() => {
     const timeoutFetch = setTimeout(async () => {
       const response = await client.collection("expenses").getFullList();
@@ -17,11 +19,16 @@ function ChartComponent() {
     }, 2000);
     const getAmount = setTimeout(async () => {
       const res = await getTotalSum();
-      console.log(res);
+      setSum(res);
+    }, 500);
+    const getHash = setTimeout(async () => {
+      const response = await cardDetailUtil();
+      console.log(response);
     }, 500);
     return () => {
       clearTimeout(timeoutFetch);
       clearTimeout(getAmount);
+      clearTimeout(getHash);
     };
   }, []);
   return (
@@ -37,7 +44,7 @@ function ChartComponent() {
             </div>
           </div>
           <div className="md:mt-10 md:w-1/4">
-            <Tables data={data} />
+            <Tables data={data} amount={sum} />
           </div>
         </div>
       </div>
