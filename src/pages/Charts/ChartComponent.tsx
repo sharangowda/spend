@@ -7,7 +7,6 @@ import client from "@/lib/client";
 import { RecordModel } from "pocketbase";
 import { useState, useEffect } from "react";
 import { getTotalSum } from "@/utils/getTotalSum";
-import { cardDetailUtil } from "@/utils/cardDetailUtils";
 
 function ChartComponent() {
   const [data, setData] = useState<RecordModel[]>([]);
@@ -21,14 +20,10 @@ function ChartComponent() {
       const res = await getTotalSum();
       setSum(res);
     }, 500);
-    const getHash = setTimeout(async () => {
-      const response = await cardDetailUtil();
-      console.log(response);
-    }, 500);
+
     return () => {
       clearTimeout(timeoutFetch);
       clearTimeout(getAmount);
-      clearTimeout(getHash);
     };
   }, []);
   return (

@@ -5,12 +5,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export function Cardsbare() {
+export function Cardsbare({ title, body, status }) {
   return (
     <Card className="w-[350px] m-3">
       <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
+        <CardTitle>Rs. {title}</CardTitle>
+        <div className="flex justify-between">
+          <CardDescription>{body}</CardDescription>
+          <CardDescription>{status}</CardDescription>
+        </div>
       </CardHeader>
     </Card>
   );
