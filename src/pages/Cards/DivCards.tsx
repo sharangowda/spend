@@ -13,7 +13,8 @@ function DivCards() {
     return () => {
       clearTimeout(getHash);
     };
-  });
+  }, []);
+  console.log(data);
   return (
     <>
       <div className="flex flex-col justify-center items-center m-5 md:flex-row">

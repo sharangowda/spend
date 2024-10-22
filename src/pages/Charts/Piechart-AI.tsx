@@ -18,6 +18,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { getAllInvoices } from "@/utils/allInvoicesChartUtil";
+
 const chartData = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
@@ -52,11 +54,125 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function PieAI() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
+const chart1 = [
+  {
+    invoice: "sharan",
+    amount: 100000,
+    fill: "var(--color-sharan)",
+  },
+  {
+    invoice: "divya",
+    amount: 100000,
+    fill: "var(--color-divya)",
+  },
+  {
+    invoice: "harish",
+    amount: 100,
+    fill: "var(--color-harish)",
+  },
+  {
+    invoice: "divya",
+    amount: 8912,
+    fill: "var(--color-divya)",
+  },
+  {
+    invoice: "shran",
+    amount: 123123,
+    fill: "var(--color-shran)",
+  },
+  {
+    invoice: "Sharan",
+    amount: 12322,
+    fill: "var(--color-Sharan)",
+  },
+  {
+    invoice: "Divya",
+    amount: 22334,
+    fill: "var(--color-Divya)",
+  },
+  {
+    invoice: "Sharan",
+    amount: 1000,
+    fill: "var(--color-Sharan)",
+  },
+  {
+    invoice: "Kar",
+    amount: 45634,
+    fill: "var(--color-Kar)",
+  },
 
+  {
+    invoice: "Again",
+    amount: 222,
+    fill: "var(--color-Again)",
+  },
+
+  {
+    invoice: "Specs",
+    amount: 10000,
+    fill: "var(--color-Specs)",
+  },
+];
+
+const chartConfig1 = {
+  amount: {
+    label: "Amount",
+  },
+  sharan: {
+    label: "sharan",
+    color: "hsl(147,31%,56%)",
+  },
+  divya: {
+    label: "divya",
+    color: "hsl(2,55%,86%)",
+  },
+  harish: {
+    label: "harish",
+    color: "hsl(117,38%,27%)",
+  },
+  shran: {
+    label: "shran",
+    color: "hsl(75,49%,45%)",
+  },
+  Sharan: {
+    label: "Sharan",
+    color: "hsl(290,54%,36%)",
+  },
+  Divya: {
+    label: "Divya",
+    color: "hsl(10,58%,34%)",
+  },
+  Kar: {
+    label: "Kar",
+    color: "hsl(197,22%,47%)",
+  },
+
+  Again: {
+    label: "Again",
+    color: "hsl(323,86%,65%)",
+  },
+
+  Specs: {
+    label: "Specs",
+    color: "hsl(257,1%,32%)",
+  },
+} satisfies ChartConfig;
+
+export function PieAI() {
+  const [chart, setChart] = React.useState<
+    { invoice: any; amount: any; fill: string }[]
+  >([]);
+  const [chartConfig, setChartConfig] = React.useState(
+    {} satisfies ChartConfig
+  );
+  React.useEffect(() => {
+    const response = async () => {
+      const res = await getAllInvoices();
+      setChart(res);
+    };
+    response();
+  }, []);
+  console.log(chart);
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -65,7 +181,7 @@ export function PieAI() {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
-          config={chartConfig}
+          config={chartConfig1}
           className="mx-auto aspect-square max-h-[250px]"
         >
           <PieChart>
@@ -74,53 +190,15 @@ export function PieAI() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
+              data={chart1}
               dataKey="visitors"
               nameKey="browser"
               innerRadius={60}
               strokeWidth={5}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
-                        >
-                          {totalVisitors.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          Visitors
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </Pie>
+            ></Pie>
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }

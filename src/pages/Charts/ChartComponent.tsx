@@ -2,12 +2,12 @@ import { SelectCharts } from "../SelectCharts";
 import { PieUP } from "./Piechart-UP";
 import { PieAI } from "./Piechart-AI";
 import { Tables } from "../Tables";
-import { BarHori } from "./Barchart-hori";
 import { BarVert } from "./Barchart-vert";
 import client from "@/lib/client";
 import { RecordModel } from "pocketbase";
 import { useState, useEffect } from "react";
 import { getTotalSum } from "@/utils/getTotalSum";
+import { TestPie } from "./ChartNew";
 
 function ChartComponent() {
   const [data, setData] = useState<RecordModel[]>([]);
