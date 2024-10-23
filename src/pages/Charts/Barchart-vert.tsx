@@ -1,13 +1,11 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -17,23 +15,27 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+import { getAllInvoices } from "@/utils/allInvoicesChartUtil";
+import React from "react";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  amount: {
+    label: "Amount",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
 export function BarVert() {
+  const [chart, setChart] = React.useState<
+    { invoice: string; amount: number }[]
+  >([]);
+  React.useEffect(() => {
+    const response = async () => {
+      const res = await getAllInvoices();
+      setChart(res);
+    };
+    response();
+  }, []);
   return (
     <Card>
       <CardHeader>
@@ -42,44 +44,32 @@ export function BarVert() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              top: 20,
-            }}
-          >
+          <BarChart accessibilityLayer data={chart}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="invoice"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.slice(0, 9)}
             />
             <ChartTooltip
-              cursor={false}
+              cursor={true}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-              />
-            </Bar>
+            {chart.length > 0 && (
+              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Bar>
+            )}
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }

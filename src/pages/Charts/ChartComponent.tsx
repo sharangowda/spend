@@ -42,7 +42,6 @@ function ChartComponent() {
             </div>
             <div className="p-3 md:h-full">
               {chart === "pie-p/u" && <PieUP />}
-              {chart === "pie-AI" && <PieAI />}
               {chart === "bar" && <BarVert />}
             </div>
           </div>

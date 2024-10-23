@@ -23,7 +23,6 @@ export function SelectCharts({ chart }) {
         <SelectGroup>
           <SelectLabel>Charts</SelectLabel>
           <SelectItem value="pie-p/u">Pie Chart-Paid Unpaid</SelectItem>
-          <SelectItem value="pie-AI">Pie Chart-All Invoices</SelectItem>
           <SelectItem value="bar">Bar Chart</SelectItem>
         </SelectGroup>
       </SelectContent>
