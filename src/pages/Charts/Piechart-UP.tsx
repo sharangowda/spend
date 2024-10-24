@@ -2,8 +2,13 @@
 
 import * as React from "react";
 import { Pie, PieChart } from "recharts";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -38,16 +43,17 @@ export function PieUP() {
     };
     response();
   }, []);
-
+  console.log(chart);
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Paid and Unpaid Bills</CardTitle>
+        <CardDescription>This Year</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[400px]"
+          className="mx-auto aspect-square max-h-[400px] w-full"
         >
           <PieChart>
             <ChartTooltip
@@ -58,7 +64,7 @@ export function PieUP() {
               <Pie
                 data={chart}
                 dataKey="count"
-                nameKey="browser"
+                nameKey="status"
                 innerRadius={80}
                 strokeWidth={5}
               ></Pie>

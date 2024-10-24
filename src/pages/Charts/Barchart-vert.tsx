@@ -1,6 +1,14 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   Card,
@@ -21,7 +29,7 @@ import React from "react";
 const chartConfig = {
   amount: {
     label: "Amount",
-    color: "hsl(var(--chart-1))",
+    color: "#2563eb",
   },
 } satisfies ChartConfig;
 
@@ -36,14 +44,15 @@ export function BarVert() {
     };
     response();
   }, []);
+  console.log(chart);
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Bar Chart - Total amount per bill</CardTitle>
+        <CardDescription>This Year</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="min-h-[400px] w-full">
           <BarChart accessibilityLayer data={chart}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -58,7 +67,7 @@ export function BarVert() {
               content={<ChartTooltipContent hideLabel />}
             />
             {chart.length > 0 && (
-              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+              <Bar dataKey="amount" fill="#2563eb" radius={8}>
                 <LabelList
                   position="top"
                   offset={12}
