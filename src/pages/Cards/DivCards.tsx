@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { Cardsbare } from "./Cardsbare";
 import { cardDetailUtil } from "@/utils/cardDetailUtils";
+import { RecordModel } from "pocketbase";
+
+interface Data {
+  [key: number]: RecordModel;
+}
 
 function DivCards() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Data>([]);
 
   useEffect(() => {
     const getHash = setTimeout(async () => {
@@ -14,7 +19,6 @@ function DivCards() {
       clearTimeout(getHash);
     };
   }, []);
-  console.log(data);
   return (
     <>
       <div className="flex flex-col justify-center items-center m-5 md:flex-row">

@@ -5,9 +5,7 @@ import {
   BarChart,
   CartesianGrid,
   LabelList,
-  Tooltip,
   XAxis,
-  YAxis,
 } from "recharts";
 
 import {
@@ -44,7 +42,7 @@ export function BarVert() {
     };
     response();
   }, []);
-  console.log(chart);
+  
   return (
     <Card>
       <CardHeader>

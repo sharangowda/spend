@@ -1,7 +1,11 @@
 import client from "@/lib/client";
 
+interface DataType {
+  [key: string]: number;
+}
+
 export async function getAllInvoices() {
-  const data = {};
+  const data: DataType = {};
   const chartData = [];
   const res = await client
     .collection("expenses")
@@ -23,5 +27,6 @@ export async function getAllInvoices() {
       amount: data[key],
     });
   }
+  console.log(data);
   return chartData;
 }

@@ -7,10 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
 
-export function SelectCharts({ chart }) {
-  const [selected, setSelected] = useState<string>("");
+type PropTypes = {
+  chart: (arg0: string) => void;
+};
+
+export function SelectCharts({ chart }: PropTypes) {
   function handleChange(value: string) {
     chart(value);
   }

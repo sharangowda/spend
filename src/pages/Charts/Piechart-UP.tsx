@@ -43,7 +43,7 @@ export function PieUP() {
     };
     response();
   }, []);
-  console.log(chart);
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">

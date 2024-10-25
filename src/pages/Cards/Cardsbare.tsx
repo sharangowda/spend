@@ -5,7 +5,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export function Cardsbare({ title, body, status }) {
+type PropTypes = {
+  title: number;
+  body: string;
+  status: string;
+};
+
+export function Cardsbare({ title, body, status }: PropTypes) {
   return (
     <Card className="w-[350px] m-3">
       <CardHeader>

@@ -13,7 +13,7 @@ export function PaymentMethod({
   toChild,
 }: {
   sendDataToParent: (value: string) => void;
-  toChild: () => boolean;
+  toChild: () => boolean | undefined;
 }) {
   const [selected, setSelected] = React.useState<
     "Cash" | "CC/Debit" | "UPI" | "Status"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,18 +15,16 @@ import { PaymentMethod } from "./PaymentMethod";
 import { DatePicker } from "./DatePicker";
 import { useEffect, useState } from "react";
 import client from "@/lib/client";
-import { RecordModel } from "pocketbase";
 
 export function AddExpenses() {
   const [invoice, setInvoice] = useState<string>("");
-  const [displayMessage, setDisplayMessage] = useState<string>("");
-  const [displayAmount, setDisplayAmount] = useState<number>(0);
+  const [_displayMessage, setDisplayMessage] = useState<string>("");
+  const [_displayAmount, setDisplayAmount] = useState<number>(0);
   const [dataFromStatusChild, setDataFromStatusChild] =
     useState<string>("Status");
   const [methodData, setMethodData] = useState<string>("Status");
   const [amount, setAmount] = useState<number>(0);
-  const [date, setDate] = useState<Date>(new Date());
-  const [data, setData] = useState<RecordModel[]>([]);
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   function datafromStatus(data: string) {
     setDataFromStatusChild(data);
@@ -39,7 +38,7 @@ export function AddExpenses() {
     setAmount(parseInt(event.currentTarget.value));
   }
 
-  function dataFromDate(data: Date) {
+  function dataFromDate(data: Date | undefined) {
     setDate(data);
   }
 
@@ -64,6 +63,7 @@ export function AddExpenses() {
       console.log("One or many fields are empty.");
     } else {
       await client.collection("expenses").create(record);
+      window.location.reload();
     }
   };
 
@@ -72,7 +72,7 @@ export function AddExpenses() {
     invoice_status: string;
     invoice_method: string;
     payment_amount: number;
-    payment_date: Date;
+    payment_date: Date | undefined;
   };
 
   const record: Record = {
