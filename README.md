@@ -1,6 +1,6 @@
 # Spend - Expense tracker made using Typescript, React and ShadCN UI library
 
-![alt text]https://github.com/sharangowda/spend/blob/master/spend.png
+![alt text](https://github.com/sharangowda/spend/blob/master/spend.png?raw=true)
 
 Clone repo
 ```
