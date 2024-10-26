@@ -15,6 +15,7 @@ import { PaymentMethod } from "./PaymentMethod";
 import { DatePicker } from "./DatePicker";
 import { useEffect, useState } from "react";
 import client from "@/lib/client";
+import { useToast } from "@/hooks/use-toast";
 
 export function AddExpenses() {
   const [invoice, setInvoice] = useState<string>("");
@@ -25,6 +26,8 @@ export function AddExpenses() {
   const [methodData, setMethodData] = useState<string>("Status");
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const { toast } = useToast();
 
   function datafromStatus(data: string) {
     setDataFromStatusChild(data);
@@ -53,6 +56,7 @@ export function AddExpenses() {
     setInvoice(e.currentTarget.value);
   }
   const pushToDatabase = async () => {
+    setSubmitting(true);
     if (
       record.invoice_method === "Status" ||
       record.invoice_status === "Status" ||
@@ -60,11 +64,15 @@ export function AddExpenses() {
       record.payment_date === null ||
       record.payment_invoices === ""
     ) {
-      console.log("One or many fields are empty.");
+      toast({
+        title: "Invalid entry",
+        description: "One or many fields are empty.",
+      });
     } else {
       await client.collection("expenses").create(record);
       window.location.reload();
     }
+    setSubmitting(false);
   };
 
   type Record = {
@@ -142,7 +150,7 @@ export function AddExpenses() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={pushToDatabase}>
+          <Button disabled={submitting} type="submit" onClick={pushToDatabase}>
             Confirm
           </Button>
         </DialogFooter>

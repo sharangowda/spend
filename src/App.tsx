@@ -1,6 +1,7 @@
 import { Navbar } from "./pages/Navbar";
 import DivCards from "./pages/Cards/DivCards";
 import ChartComponent from "./pages/Charts/ChartComponent";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <div className="flex mt-5 text-sm font-light justify-center item-center">
         <footer className="my-2">Made using shadcn and typescript.</footer>
       </div>
+      <Toaster />
     </>
   );
 }
